@@ -1,0 +1,8 @@
+<iframe name="content"
+src="pagetopull"
+onload="window.frames'content'.scrollTo(0,0)"
+style="width:00px;
+height:00px;
+border-width:0px;"
+scrolling="auto">
+</iframe>
