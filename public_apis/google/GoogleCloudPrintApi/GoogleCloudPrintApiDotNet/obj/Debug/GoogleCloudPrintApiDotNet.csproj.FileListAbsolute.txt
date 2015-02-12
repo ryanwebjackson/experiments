@@ -1,2 +1,0 @@
-C:\dev\experiments\GoogleCloudPrintApi\GoogleCloudPrintApiDotNet\bin\Debug\GoogleCloudPrintApiDotNet.exe.config
-C:\Users\ryan\Dropbox\Code (deprecated)\gcp_experiments\GoogleCloudPrintApi\GoogleCloudPrintApiDotNet\bin\Debug\GoogleCloudPrintApiDotNet.exe.config
