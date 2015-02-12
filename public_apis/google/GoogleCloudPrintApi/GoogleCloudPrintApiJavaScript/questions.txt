@@ -1,0 +1,5 @@
+﻿Questions to Investigate:  
+* Does GCP detect, through cookies, whether the user is logged into their Google Account?
+* Is there a way to programmatically call a GCP Print command without prompting the user **in a UI**?
+* What does this do? - 'gadget.setOnPrintLocallyCallback(a);'
+* How to read/catch error/failure message for bad print command?

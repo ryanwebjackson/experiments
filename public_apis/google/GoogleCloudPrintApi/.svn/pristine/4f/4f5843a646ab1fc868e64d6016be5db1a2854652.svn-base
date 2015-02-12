@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8' />
+	<title>Prototype - GAccount Auth, GDrive Access, GCP</title>
+	
+	<script src="Scripts/jquery-2.1.0.js"></script>
+
+	<!-- Google Cloud Print gadget library -->
+	<script src="https://www.google.com/cloudprint/client/cpgadget.js"></script>
+
+</head>
+<body>
+	<!-- Add a button for the user to click to initiate auth sequence -->
+	<button id="authorize-button" style="visibility: hidden">Authorize</button>
+
+	<script type="text/javascript">
+
+        // Note: In a production application,  
+        //   these Google Dev Console settings, and Authorization callbacks  
+        //   will be passed in via separate modules.
+		//   This HTML file acts as the core harness / web page.
+
+		/*
+		GET https://code.google.com/apis/console/b/0/client-secrets?project=22075104911&client=22075104911-cenm1ebaffpb4vbm650dkeoqidb3tat1.apps.googleusercontent.com&xsrf=AL254vQX6iJr3SIxETpXZqH3xukGL4ZO-A:1398091726981 HTTP/1.1
+		Host: code.google.com
+		User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0
+		Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*//*;q=0.8
+		Accept-Language: en-US,en;q=0.5
+		Accept-Encoding: gzip, deflate
+		Referer: https://code.google.com/apis/console/b/0/?noredirect&pli=1
+		Cookie: PREF=ID=e42375e383b0dc05:U=d313eda85a6c1df4:FF=0:LD=en:TM=1391628945:LM=1396530840:GM=1:S=eHHmdjCiKph9vpqV; NID=67=k5K1fxZDYPxWwq_S-hWtkXmnO5a4SysSq4YeALcnn3JHL-pBgLBbkKbZ3wvVOj76UXn-O1pPp3qGvYXkFKdGSmsTDs9vsmNl28SZmPWikDT6Nv0CZwCZ2iZptZDjOjJk-THVxR__2gmWp2ZAm6rpSlEjQRxyaTyIdtuX2pInBE5I2HFo2GWWX8M5TiZd; SID=DQAAAOMAAAC0EIHBslURZasFHWSCKjxT-8LIW97htYA1uSh6oIRXPOPZMOF3km0FErlLFxXR_gb1HsGIjA3Gp0WT29e9G9C3CFh-__i8YgZwcK8OYQ014PUsBFuZ4syPARfX0mMTvtO3XGGpu5Y0M-l-NiZdRBkEeWsljbA-y4f3X8U1uxfQv8woxH0-YNbnDQVeqZqIv8O8ek0cDNrip05Mt7j1YbRzxBuZ2sLt30_imB5jY6j5JRwhjddt1XMN8XAHv5Iq_2BEBjKx2n0KmhXHdDRxQ3IdvVU-ZSjl9fWooAEDvfjO2_7xbe3LpVWCEMWhlWCI5jc; HSID=AY0syd9sErn93ENY2; SSID=ARSoyaGfwNP3NUygv; APISID=g8EJQ2-BzqwDGstx/AbKLoLAElC3ADF49I; SAPISID=1EW3yYPDHVqW5Zej/AvZXrHurqsJi8RhuN; DEVCSSL=DQAAAOUAAADZiPgdkgjgiJ90VqT9JBciNYAo1NK9Xlolajx7xMkL-gG49Wf1izz_7E_CDKpKBXPk_cQCXUsjr7wJ3KE6iXk8lCpJA2PjuewMM72rxSCX4XdBNB4cwO0HSeYUwWiml1A9OG-u1WjYTeLyZYqd1UbDSid26PrnkCv-GuUiCPeYnhXyPcxGHLSCxHmylU3sxclCEiQvdGLT4vBCAISb_hUKOMxQHaAI2oriBZtrQxuN9s87sbdJ49EsoWi-HSl4XLd2ihbvZAVM56hD5syOz1OAT529KolUBy3BQ2H-q3_UdOzwxys2sHmUjhs5UKllRZ0; __utma=247248150.1451620264.1397572208.1398086494.1398091726.10; __utmz=247248150.1398006952.7.4.utmcsr=console.developers.google.com|utmccn=(referral)|utmcmd=referral|utmcct=/project/22075104911/apiui/api/configs/drive_sdk; __utmc=247248150; S=billing-ui=MPrC_gz7S15KqXzFdy2_uw:billing-ui-efe=MPrC_gz7S15KqXzFdy2_uw; __utmb=247248150.2.9.1398091726
+		Connection: keep-alive
+		*/
+		// Note: Cannot currently obtain settings from http request, because token times out. - 04/21/2014 10:08
+        var clientId = '22075104911-cenm1ebaffpb4vbm650dkeoqidb3tat1.apps.googleusercontent.com',
+            scopes = ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/cloudprint'],
+            clientSecret = '2JVET_xDMyaT77ccWrRXZunH',
+		    redirectUri = 'https://localhost/oauth2callback';
+
+        var apiKey = 'AIzaSyA2tUgpK6DpvGPgej-mIbzpFw1ZZ9iKyYQ';
+        function handleClientLoad() {
+            gapi.client.setApiKey(apiKey);
+            window.setTimeout(checkAuth, 1);
+        }
+
+        function checkAuth() {
+            gapi.auth.authorize({ client_id: clientId, scope: scopes, immediate: true }, handleAuthResult);
+        }
+
+        function handleAuthResult(authResult) {
+            var authorizeButton = document.getElementById('authorize-button');
+            if (authResult && !authResult.error) {
+                authorizeButton.style.visibility = 'hidden';
+                makeApiCall();
+            } else {
+                authorizeButton.style.visibility = '';
+                authorizeButton.onclick = handleAuthClick;
+            }
+        }
+
+        function handleAuthClick(event) {
+            gapi.auth.authorize({ client_id: clientId, scope: scopes, immediate: false }, handleAuthResult);
+            return false;
+        }
+
+        // Load the API and make an API call.  Display the results on the screen.
+        function makeApiCall() {
+
+            // Make API call for Drive. Display results as file list.
+            gapi.client.load('drive', 'v2', function () {
+
+                function retrieveAllFiles(callback) {
+                    var retrievePageOfFiles = function (request, result) {
+                        request.execute(function (resp) {
+                            result = result.concat(resp.items);
+
+                            //console.log('result: ', result); //debug
+
+                            var nextPageToken = resp.nextPageToken;
+                            if (nextPageToken) {
+                                request = gapi.client.drive.files.list({
+                                    'pageToken': nextPageToken
+                                });
+                                retrievePageOfFiles(request, result);
+                            } else {
+                                callback(result);
+                            }
+                        });
+                    }
+
+                    var initialRequest = gapi.client.drive.files.list();
+                    retrievePageOfFiles(initialRequest, []);
+                }
+
+
+                var content = document.getElementById('content');
+
+                // Make API call.
+                retrieveAllFiles(doFileStuff);
+
+                // List files.
+                function doFileStuff(files) {
+                    var file;
+
+                    // Setup UI for file list
+                    var heading = document.createElement("h3");
+                    content.appendChild(heading);
+                    heading.appendChild(document.createTextNode("File list from authenticated user's Drive: "));
+
+                    // Select a file.
+                    for (var i = 0; i < files.length; i++) {
+
+                        console.log('files.length = ' + files.length);
+
+                        // More file list UI
+                        content.appendChild(document.createTextNode(files[i].title + ' -- '));
+                        content.appendChild(document.createTextNode(files[i].mimeType));
+                        content.appendChild(document.createElement("br"));
+
+                        if (files[i].mimeType === "application/pdf") {
+                            file = files[i];
+                            break;
+                        }
+                    }
+
+                    // Print the file with GCP.
+                    printDriveDoc(file.id, file.title);
+                }
+
+                function printDriveDoc(docId, docTitle) {
+                    var gadget = new cloudprint.Gadget();
+                    gadget.setPrintDocument('google.drive', docTitle, docId);
+                    gadget.openPrintDialog();
+                }
+
+            });
+
+        }
+    </script>
+
+	<div id="content">
+		<ul id="filelist">
+		</ul>
+	</div>
+	<br />
+	<p>Retrieves your file list using the Google Drive API. Prints the first PDF.</p>
+
+
+	<!-- generic Google API client library -->
+	<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+
+</body>
+</html>

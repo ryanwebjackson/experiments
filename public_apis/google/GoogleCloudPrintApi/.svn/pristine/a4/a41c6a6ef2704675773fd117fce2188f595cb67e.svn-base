@@ -1,0 +1,10 @@
+﻿{ // for Dev console 'rlieng.math@gmail.com', project 'API Project'
+	"installed": {
+		"client_id": "22075104911.apps.googleusercontent.com",
+		"client_secret": "FnkgXBE-o3r8VQ0O9gh32SqG",
+		"auth_uri": "https://accounts.google.com/o/oauth2/auth",
+		"token_uri": "https://accounts.google.com/o/oauth2/token",
+		"redirect_uri": "urn:ietf:wg:oauth:2.0:oob"
+		//"api_key": "AIzaSyDR8lvlwwH5ofg6urRsxnHIHITghqH91bg"
+	}
+}
