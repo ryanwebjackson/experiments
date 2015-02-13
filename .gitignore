@@ -3,3 +3,6 @@
 bin
 obj
 *.user
+private
+build
+dist
