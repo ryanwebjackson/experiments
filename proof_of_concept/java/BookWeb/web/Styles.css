@@ -1,0 +1,91 @@
+/* 
+    Document   : Styles
+    Created on : Oct 19, 2010, 1:43:27 PM
+    Author     : rjackson22
+    Description:
+        Styles for the entire Book Web application
+*/
+
+body {
+    font: 12px/170% 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
+    color: #000777;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+}
+
+p { margin: 10px 25px; }
+
+img { border: none;
+      margin-left: 20px; }
+
+/* Links */
+a:link, a:visited {
+    text-decoration: none;
+    color: #FF409F;
+}
+a:hover {
+    color: #147DB6;
+}
+#logo {
+    color: #000555;
+}
+
+/* Headers */
+h1, h2, h3, h4 {
+    font: bold 1em/1.5em 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
+    color: #000555;
+    margin: 8px 25px;
+    font-weight: normal;
+}
+h1 { font-size: 3.7em; letter-spacing: -2px; }
+h2 { font-size: 2.8em; }
+h3 { font-size: 2.2em; letter-spacing: -0.5px; padding-top: 15px; }
+h4 { font-size: 1.5em; }
+
+/* Lists */
+ul {
+    margin: 10px 25px;
+    padding: 0 20px;
+}
+ul { list-style: disc; }
+
+/* Forms */
+form {
+    margin: 10px 25px 10px 25px;
+    padding: 10px 25px 25px 25px;
+    background: #F3F4F5;
+    border: 1px solid #E2E4E7;
+    width: 477px;
+}
+form p {
+    border-bottom: 1px solid #E6E6E6;
+    margin: 0;
+    padding: 12px 0 5px 0;
+    color: #2C76A6;
+}
+input, select {
+	margin: 5px 0;
+	padding: 7px 6px;
+	color: #6A6969;
+	border-width: 1px;
+	border-style: solid;
+  	border-color: #D4D4D4 #EBEBEB #EBEBEB #D4D4D4;
+	font: 11px 'Lucida Grande', Verdana, Helvetica, sans-serif;
+}
+input:focus, select:focus {
+	color: #19465D;
+	background: #EEF8FB;
+}
+input[type="button"],input[type="submit"] {
+	font: bold 12px Arial, Sans-serif;
+	height: 30px;
+	margin: 0;
+	padding: 2px 3px;
+	color: #000FFF;
+	background: #2C76A6;
+	border-width: 1px;
+  	border-style: solid;
+  	border-color: #86BBDF #245F86 #245F86 #86BBDF;
+	cursor: pointer;
+}
